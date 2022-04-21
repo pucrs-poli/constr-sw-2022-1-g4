@@ -14,3 +14,12 @@ PUT /users/{id}: atualização de um usuário
 PATCH /users/{id}: atualização da senha de um usuário
 
 DELETE /users/{id}: exclusão lógica de um usuário
+
+## Tecnologias
+
+- Springboot
+- Swagger
+- Keycloak
+- MongoDB
+- HelmCharts
+- Kubernetes
