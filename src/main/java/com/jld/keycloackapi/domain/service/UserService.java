@@ -1,18 +1,17 @@
 package com.jld.keycloackapi.domain.service;
 
-import com.jld.keycloackapi.domain.data.User;
-import com.jld.keycloackapi.domain.repository.UserRepository;
+import com.jld.keycloackapi.domain.data.UserEntity;
 import java.util.stream.Stream;
 
-public class UserService implements UserRepository {
+public class UserService implements IUserService {
 
 	@Override
-	public User getUser() {
+	public UserEntity getUser() {
 		return null;
 	}
 
 	@Override
-	public Stream<User> getAllUsers() {
+	public Stream<UserEntity> getAllUsers() {
 		return null;
 	}
 
