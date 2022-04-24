@@ -3,8 +3,7 @@ package com.jld.keycloackapi.domain.service;
 import com.jld.keycloackapi.domain.data.UserEntity;
 import com.jld.keycloackapi.domain.dto.UserDTO;
 import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.resource.RealmResource;
-import org.keycloak.admin.client.resource.UsersResource;
+import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,18 +33,11 @@ public class UserService implements IUserService {
 	@Override
 	public boolean createUser(UserDTO userDTO) {
 		keycloak.tokenManager().getAccessToken();
-		UserRepresentation user = new UserRepresentation();
-		user.setEnabled(true);
-		user.setUsername(userDTO.getEmail());
-		user.setFirstName(userDTO.getFirstname());
-		user.setLastName(userDTO.getLastname());
-		user.setEmail(userDTO.getEmail());
 
-		RealmResource realmResource = keycloak.realm(realm);
-		UsersResource usersRessource = realmResource.users();
+		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
 
 		try{
-			usersRessource.create(user);
+			keycloak.realm(realm).users().create(user);
 			return true;
 		}catch (Exception ignored){
 			return false;
@@ -64,16 +56,43 @@ public class UserService implements IUserService {
 
 	@Override
 	public boolean updateUser(UserDTO userDTO, String id) {
-//		try{
-//			return true;
-//		}catch (Exception ignored){
-//			return false;
-//		}
-		return false;
+		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
+		try{
+			keycloak.realm(realm).users().get(id).update(user);
+			return true;
+		}catch (Exception ignored){
+			return false;
+		}
 	}
 
 	@Override
-	public boolean updateUserPassword() {
-		return false;
+	public boolean updateUserPassword(UserDTO userDTO, String id) {
+		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
+		try{
+			keycloak.realm(realm).users().get(id).update(user);
+			return true;
+		}catch (Exception ignored){
+			return false;
+		}
+	}
+
+	private CredentialRepresentation credentialRepresentation(UserDTO userDTO) {
+		CredentialRepresentation password = new CredentialRepresentation();
+		password.setTemporary(false);
+		password.setType(CredentialRepresentation.PASSWORD);
+		password.setValue(userDTO.getPassword());
+		return password;
+	}
+
+	private UserRepresentation userRepresentation (UserDTO userDTO, CredentialRepresentation passwords){
+		UserRepresentation user = new UserRepresentation();
+		user.setEnabled(true);
+		user.setUsername(userDTO.getEmail());
+		user.setFirstName(userDTO.getFirstname());
+		user.setLastName(userDTO.getLastname());
+		user.setEmail(userDTO.getEmail());
+		user.setCredentials(List.of(passwords));
+
+		return user;
 	}
 }

@@ -18,5 +18,5 @@ public interface IUserService {
 
     boolean updateUser(UserDTO userDTO, String id);
 
-    boolean updateUserPassword();
+    boolean updateUserPassword(UserDTO userDTO, String id);
 }
