@@ -1,20 +1,22 @@
 package com.jld.keycloackapi.domain.service;
 
 import com.jld.keycloackapi.domain.data.UserEntity;
+import com.jld.keycloackapi.domain.dto.UserDTO;
+import org.keycloak.representations.idm.UserRepresentation;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 public interface IUserService {
 
     UserEntity getUser();
 
-    Stream<UserEntity> getAllUsers();
+    List<UserRepresentation> getAllUsers();
 
-    boolean createUser();
+    boolean createUser(UserDTO userDTO);
 
-    boolean deleteUser();
+    boolean deleteUser(String id);
 
-    boolean updateUser();
+    boolean updateUser(UserDTO userDTO, String id);
 
     boolean updateUserPassword();
 }
