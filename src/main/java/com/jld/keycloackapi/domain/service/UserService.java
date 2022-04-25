@@ -1,79 +1,137 @@
 package com.jld.keycloackapi.domain.service;
 
-import com.jld.keycloackapi.domain.data.UserEntity;
 import com.jld.keycloackapi.domain.dto.UserDTO;
-import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class UserService implements IUserService {
-	@Autowired
-	private Keycloak keycloak;
+	@Value("${keycloak.auth-server-url}")
+	String baseUri;
 
 	@Value("${keycloak.realm}")
-	private String realm;
+	String realm;
+
+	private RestTemplate restTemplate = new RestTemplate();
+
+//	@Value("${keycloak.url.auth}")
+//	private String auth_endpoint;
+//
+//	@Value("${keycloak.url.token}")
+//	private String token_endpoint;
+
+	private List<UserRepresentation> ResponseEntity;
+
+
+	private MultiValueMap<String, String> headers(String token) {
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add("Authorization", token);
+		return headers;
+	}
+
 
 	@Override
-	public UserEntity getUser(String id) {
-		return (UserEntity) keycloak.realm(realm).users().get(id);
+	public ResponseEntity<String> getUser(String Authorization, String id) {
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("Authorization",Authorization);
+		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		return restTemplate.exchange(
+				getUsers, HttpMethod.GET, requestEntity, String.class,id);
 	}
 
 	@Override
-	public List<UserRepresentation> getAllUsers() {
+	public ResponseEntity<String> getAllUsers(String Authorization) {
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("Authorization",Authorization);
+		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-		return keycloak.realm(realm).users().list();
+		return restTemplate.exchange(
+				getUsers, HttpMethod.GET, requestEntity, String.class,"");
 	}
 
 	@Override
-	public boolean createUser(UserDTO userDTO) {
+	public HttpStatus deleteUser(String Authorization, String id) {
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("Authorization", Authorization);
+		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+		HashMap<String,String> param = new HashMap<>();
+		param.put("id", id);
+//		restTemplate.exchange(getUsers, HttpMethod.DELETE, requestEntity, Void.class, id);
+		try {
+		restTemplate.exchange(getUsers, HttpMethod.DELETE, requestEntity, Void.class, param);
+			return HttpStatus.OK;
+		} catch (Exception ignored) {
+			return HttpStatus.BAD_REQUEST;
+
+		}
+
+	}
+
+	@Override
+	public ResponseEntity<UserRepresentation> createUser(String Authorization, UserDTO userDTO) {
+
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("Authorization",Authorization);
 
 		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
 
-		try{
-			keycloak.realm(realm).users().create(user);
-			return true;
-		}catch (Exception ignored){
-			return false;
-		}
+		HttpEntity<UserRepresentation> requestEntity =
+				new HttpEntity<>(user,headers);
+
+		return restTemplate.exchange(
+				getUsers, HttpMethod.POST, requestEntity, UserRepresentation.class);
+
 	}
 
 	@Override
-	public boolean deleteUser(String id) {
+	public ResponseEntity<UserRepresentation> updateUser(String Authorization,UserDTO userDTO, String id) {
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("Authorization",Authorization);
 
-		try{
-			keycloak.realm(realm).users().delete(id);
-			return true;
-		}catch (Exception ignored){
-			return false;
-		}
-	}
-
-	@Override
-	public boolean updateUser(UserDTO userDTO, String id) {
 		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
-		try{
-			keycloak.realm(realm).users().get(id).update(user);
-			return true;
-		}catch (Exception ignored){
-			return false;
-		}
+
+		HttpEntity<UserRepresentation> requestEntity =
+				new HttpEntity<>(user,headers);
+
+		return restTemplate.exchange(
+				getUsers, HttpMethod.PUT, requestEntity, UserRepresentation.class);
 	}
 
 	@Override
-	public boolean updateUserPassword(UserDTO userDTO, String id) {
+	public ResponseEntity<UserRepresentation> updateUserPassword(String Authorization,UserDTO userDTO, String id) {
 		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
-		try{
-			keycloak.realm(realm).users().get(id).update(user);
-			return true;
-		}catch (Exception ignored){
-			return false;
-		}
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.add("Authorization",Authorization);
+
+		HttpEntity<UserRepresentation> requestEntity =
+				new HttpEntity<>(user,headers);
+
+		return restTemplate.exchange(
+				getUsers, HttpMethod.PATCH, requestEntity, UserRepresentation.class);
+
 	}
 
 	private CredentialRepresentation credentialRepresentation(UserDTO userDTO) {
@@ -95,4 +153,5 @@ public class UserService implements IUserService {
 
 		return user;
 	}
+
 }

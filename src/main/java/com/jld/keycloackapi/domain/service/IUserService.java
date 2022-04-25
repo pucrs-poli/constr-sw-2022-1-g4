@@ -1,22 +1,21 @@
 package com.jld.keycloackapi.domain.service;
 
-import com.jld.keycloackapi.domain.data.UserEntity;
 import com.jld.keycloackapi.domain.dto.UserDTO;
 import org.keycloak.representations.idm.UserRepresentation;
-
-import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 public interface IUserService {
 
-    UserEntity getUser(String id);
+    ResponseEntity<String> getUser(String Authorization, String id);
 
-    List<UserRepresentation> getAllUsers();
+    ResponseEntity<String> getAllUsers(String Authorization);
 
-    boolean createUser(UserDTO userDTO);
+    ResponseEntity<UserRepresentation> createUser(String Authorization, UserDTO userDTO);
 
-    boolean deleteUser(String id);
+    HttpStatus deleteUser(String Authorization, String id);
 
-    boolean updateUser(UserDTO userDTO, String id);
+    ResponseEntity<UserRepresentation> updateUser(String Authorization,UserDTO userDTO, String id);
 
-    boolean updateUserPassword(UserDTO userDTO, String id);
+    ResponseEntity<UserRepresentation> updateUserPassword(String Authorization,UserDTO userDTO, String id);
 }
