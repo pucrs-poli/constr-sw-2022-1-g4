@@ -11,7 +11,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -42,14 +41,14 @@ public class UserService implements IUserService {
 
 	@Override
 	public ResponseEntity<String> getUser(String Authorization, String id) {
-		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users/"+id;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.add("Authorization",Authorization);
 		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
 		return restTemplate.exchange(
-				getUsers, HttpMethod.GET, requestEntity, String.class,id);
+				getUsers, HttpMethod.GET, requestEntity, String.class);
 	}
 
 	@Override
@@ -66,16 +65,13 @@ public class UserService implements IUserService {
 
 	@Override
 	public HttpStatus deleteUser(String Authorization, String id) {
-		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users/"+id;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.add("Authorization", Authorization);
 		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-		HashMap<String,String> param = new HashMap<>();
-		param.put("id", id);
-//		restTemplate.exchange(getUsers, HttpMethod.DELETE, requestEntity, Void.class, id);
 		try {
-		restTemplate.exchange(getUsers, HttpMethod.DELETE, requestEntity, Void.class, param);
+			restTemplate.exchange(getUsers, HttpMethod.DELETE, requestEntity, Void.class);
 			return HttpStatus.OK;
 		} catch (Exception ignored) {
 			return HttpStatus.BAD_REQUEST;
@@ -104,7 +100,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public ResponseEntity<UserRepresentation> updateUser(String Authorization,UserDTO userDTO, String id) {
-		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users/"+id;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.add("Authorization",Authorization);
@@ -121,7 +117,7 @@ public class UserService implements IUserService {
 	@Override
 	public ResponseEntity<UserRepresentation> updateUserPassword(String Authorization,UserDTO userDTO, String id) {
 		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
-		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+		String getUsers = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users/"+id;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.add("Authorization",Authorization);
@@ -130,7 +126,7 @@ public class UserService implements IUserService {
 				new HttpEntity<>(user,headers);
 
 		return restTemplate.exchange(
-				getUsers, HttpMethod.PATCH, requestEntity, UserRepresentation.class);
+				getUsers, HttpMethod.PUT, requestEntity, UserRepresentation.class);
 
 	}
 

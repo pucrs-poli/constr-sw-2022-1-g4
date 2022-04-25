@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.ws.rs.PathParam;
 
 @RestController
 @RequestMapping("/users")
@@ -23,7 +22,7 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<String> getUser(@RequestHeader("Authorization") String Authorization, String id) {
+	public ResponseEntity<String> getUser(@RequestHeader("Authorization") String Authorization, @PathVariable("id") String id) {
 		return userService.getUser(Authorization,id);
 	}
 
@@ -33,17 +32,17 @@ public class UserController {
 	}
 
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<UserRepresentation> updateUser(@RequestHeader("Authorization") String Authorization, @RequestBody UserDTO userDTO, String id) {
+	public ResponseEntity<UserRepresentation> updateUser(@RequestHeader("Authorization") String Authorization, @RequestBody UserDTO userDTO, @PathVariable("id") String id) {
 		return userService.updateUser(Authorization,userDTO,id);
 	}
 
 	@PatchMapping(path = "/{id}")
-	public ResponseEntity<UserRepresentation> updateUserPassword(@RequestHeader("Authorization") String Authorization, @RequestBody UserDTO userDTO, String id) {
+	public ResponseEntity<UserRepresentation> updateUserPassword(@RequestHeader("Authorization") String Authorization, @RequestBody UserDTO userDTO, @PathVariable("id") String id) {
 		return userService.updateUserPassword(Authorization, userDTO,id);
 	}
 
 	@DeleteMapping(path ="/{id}")
-	public HttpStatus deleteUser(@RequestHeader("Authorization") String Authorization, @PathParam("id") String id) {
+	public HttpStatus deleteUser(@RequestHeader("Authorization") String Authorization, @PathVariable("id") String id) {
 		return userService.deleteUser(Authorization,id);
 	}
 
