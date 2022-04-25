@@ -2,7 +2,6 @@ package com.jld.keycloackapi.application.controllers;
 
 import com.jld.keycloackapi.domain.dto.UserDTO;
 import com.jld.keycloackapi.domain.service.UserService;
-import jdk.jfr.ContentType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
