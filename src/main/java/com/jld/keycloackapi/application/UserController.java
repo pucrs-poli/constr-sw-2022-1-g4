@@ -1,4 +1,4 @@
-package com.jld.keycloackapi.application.controllers;
+package com.jld.keycloackapi.application;
 
 import com.jld.keycloackapi.domain.dto.UserDTO;
 import com.jld.keycloackapi.domain.service.UserService;
@@ -17,32 +17,38 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping
-	public ResponseEntity<String> getAllUsers(@RequestHeader("Authorization") String Authorization) {
+	public ResponseEntity<String> getAllUsers(final @RequestHeader("Authorization") String Authorization) {
 		return userService.getAllUsers(Authorization);
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<String> getUser(@RequestHeader("Authorization") String Authorization, @PathVariable("id") String id) {
+	public ResponseEntity<String> getUser(final @RequestHeader("Authorization") String Authorization, final @PathVariable("id") String id) {
 		return userService.getUser(Authorization,id);
 	}
 
 	@PostMapping
-	public ResponseEntity<UserRepresentation> createUser(@RequestHeader("Authorization") String Authorization, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserRepresentation> createUser(final @RequestHeader("Authorization") String Authorization, final @RequestBody UserDTO userDTO) {
 		return userService.createUser(Authorization,userDTO);
 	}
 
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<UserRepresentation> updateUser(@RequestHeader("Authorization") String Authorization, @RequestBody UserDTO userDTO, @PathVariable("id") String id) {
+	public ResponseEntity<UserRepresentation> updateUser(
+		final @RequestHeader("Authorization") String Authorization,
+		final @RequestBody UserDTO userDTO,
+		final @PathVariable("id") String id) {
 		return userService.updateUser(Authorization,userDTO,id);
 	}
 
 	@PatchMapping(path = "/{id}")
-	public ResponseEntity<UserRepresentation> updateUserPassword(@RequestHeader("Authorization") String Authorization, @RequestBody UserDTO userDTO, @PathVariable("id") String id) {
+	public ResponseEntity<UserRepresentation> updateUserPassword(
+		final @RequestHeader("Authorization") String Authorization,
+		final @RequestBody UserDTO userDTO,
+		final @PathVariable("id") String id) {
 		return userService.updateUserPassword(Authorization, userDTO,id);
 	}
 
 	@DeleteMapping(path ="/{id}")
-	public HttpStatus deleteUser(@RequestHeader("Authorization") String Authorization, @PathVariable("id") String id) {
+	public HttpStatus deleteUser(final @RequestHeader("Authorization") String Authorization, final @PathVariable("id") String id) {
 		return userService.deleteUser(Authorization,id);
 	}
 
