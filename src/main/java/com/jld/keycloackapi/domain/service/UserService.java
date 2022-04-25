@@ -1,5 +1,6 @@
 package com.jld.keycloackapi.domain.service;
 
+import com.jld.keycloackapi.configuration.KeycloakManager;
 import com.jld.keycloackapi.domain.data.UserEntity;
 import com.jld.keycloackapi.domain.dto.UserDTO;
 import org.keycloak.admin.client.Keycloak;
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.Response;
+
 import java.util.List;
 
 @Service
@@ -21,8 +22,8 @@ public class UserService implements IUserService {
 	private String realm;
 
 	@Override
-	public UserEntity getUser() {
-		return null;
+	public UserEntity getUser(String id) {
+		return (UserEntity) keycloak.realm(realm).users().get(id);
 	}
 
 	@Override
@@ -32,7 +33,6 @@ public class UserService implements IUserService {
 
 	@Override
 	public boolean createUser(UserDTO userDTO) {
-		keycloak.tokenManager().getAccessToken();
 
 		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
 
@@ -56,6 +56,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public boolean updateUser(UserDTO userDTO, String id) {
+
 		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
 		try{
 			keycloak.realm(realm).users().get(id).update(user);
@@ -67,6 +68,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public boolean updateUserPassword(UserDTO userDTO, String id) {
+
 		UserRepresentation user = userRepresentation(userDTO, credentialRepresentation(userDTO));
 		try{
 			keycloak.realm(realm).users().get(id).update(user);

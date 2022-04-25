@@ -20,6 +20,3 @@ DELETE /users/{id}: exclusão lógica de um usuário
 - Springboot
 - Swagger
 - Keycloak
-- MongoDB
-- HelmCharts
-- Kubernetes

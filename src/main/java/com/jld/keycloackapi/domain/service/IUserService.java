@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IUserService {
 
-    UserEntity getUser();
+    UserEntity getUser(String id);
 
     List<UserRepresentation> getAllUsers();
 
