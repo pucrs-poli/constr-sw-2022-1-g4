@@ -1,146 +1,22 @@
 package com.jld.keycloackapi.domain.service;
 
 import com.jld.keycloackapi.domain.dto.UserDTO;
-import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import java.util.Collections;
-import java.util.List;
+public interface UserService {
 
-@Service
-public class UserService implements IUserService {
+    ResponseEntity<String> getUser(String Authorization, String id);
 
-	@Value("${keycloak.auth-server-url}")
-	String baseUri;
+    ResponseEntity<String> getAllUsers(String Authorization);
 
-	@Value("${keycloak.realm}")
-	String realm;
+    ResponseEntity<UserRepresentation> createUser(String Authorization, UserDTO userDTO);
 
-	private RestTemplate restTemplate = new RestTemplate();
+    HttpStatus deleteUser(String Authorization, String id);
 
-	private static final String PATH = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+    ResponseEntity<UserRepresentation> updateUser(String Authorization,UserDTO userDTO, String id);
 
-
-	@Override
-	public ResponseEntity<String> getUser(String authorization, String id) {
-		try{
-			return restTemplate.exchange(
-					PATH + "/" + id,
-					HttpMethod.GET,
-					getHttpEntity(authorization),
-					String.class
-			);
-		}catch (Exception ignored){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
-
-	@Override
-	public ResponseEntity<String> getAllUsers(String authorization) {
-		return restTemplate.exchange(
-			PATH,
-			HttpMethod.GET,
-			getHttpEntity(authorization),
-			String.class,
-			""
-		);
-	}
-
-	@Override
-	public HttpStatus deleteUser(String authorization, String id) {
-		try {
-			restTemplate.exchange(
-				PATH + "/" + id,
-				HttpMethod.DELETE,
-				getHttpEntity(authorization),
-				Void.class
-			);
-			return HttpStatus.OK;
-		} catch (Exception ignored) {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
-
-	@Override
-	public ResponseEntity<UserRepresentation> createUser(String authorization, UserDTO userDTO) {
-		try {
-			return restTemplate.exchange(
-					PATH,
-					HttpMethod.POST,
-					getHttpEntity(authorization, userDTO),
-					UserRepresentation.class
-			);
-		}catch (Exception ignored){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-	}
-
-	@Override
-	public ResponseEntity<UserRepresentation> updateUser(String authorization, UserDTO userDTO, String id) {
-		try {
-			return new ResponseEntity<>(restTemplate.exchange(
-					PATH + "/" + id,
-					HttpMethod.PUT,
-					getHttpEntity(authorization, userDTO),
-					UserRepresentation.class
-			).getBody(),HttpStatus.OK);
-		}catch (Exception ignored){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
-
-	@Override
-	public ResponseEntity<UserRepresentation> updateUserPassword(String authorization, UserDTO userDTO, String id) {
-		try {
-			return new ResponseEntity<>(restTemplate.exchange(
-					PATH + "/" + id,
-					HttpMethod.PUT,
-					getHttpEntity(authorization, userDTO),
-					UserRepresentation.class
-			).getBody(),HttpStatus.OK);
-		}catch (Exception ignored){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-
-	}
-
-	private CredentialRepresentation credentialRepresentation(UserDTO userDTO) {
-		CredentialRepresentation password = new CredentialRepresentation();
-		password.setTemporary(false);
-		password.setType(CredentialRepresentation.PASSWORD);
-		password.setValue(userDTO.getPassword());
-		return password;
-	}
-
-	private UserRepresentation userRepresentation(UserDTO userDTO, CredentialRepresentation passwords){
-		UserRepresentation user = new UserRepresentation();
-		user.setEnabled(userDTO.getEnabled());
-		user.setUsername(userDTO.getUsername());
-		user.setFirstName(userDTO.getFirstname());
-		user.setLastName(userDTO.getLastname());
-		user.setEmail(userDTO.getEmail());
-		user.setCredentials(List.of(passwords));
-		return user;
-	}
-
-	private HttpEntity getHttpEntity(String authorization) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		headers.add("Authorization", authorization);
-		return new HttpEntity<>(headers);
-	}
-
-	private HttpEntity getHttpEntity(String authorization, UserDTO userDTO) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		headers.add("Authorization", authorization);
-		return new HttpEntity<>(userRepresentation(userDTO, credentialRepresentation(userDTO)),headers);
-	}
+    ResponseEntity<UserRepresentation> updateUserPassword(String Authorization,UserDTO userDTO, String id);
 
 }

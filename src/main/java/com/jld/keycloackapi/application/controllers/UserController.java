@@ -1,9 +1,8 @@
-package com.jld.keycloackapi.application;
+package com.jld.keycloackapi.application.controllers;
 
 import com.jld.keycloackapi.domain.dto.UserDTO;
-import com.jld.keycloackapi.domain.service.UserService;
+import com.jld.keycloackapi.domain.service.UserServiceImpl;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,7 @@ import javax.annotation.Resource;
 public class UserController {
 
 	@Resource
-	private UserService userService;
+	private UserServiceImpl userService;
 
 	@GetMapping
 	public ResponseEntity<String> getAllUsers(@RequestHeader("Authorization") String Authorization) {
