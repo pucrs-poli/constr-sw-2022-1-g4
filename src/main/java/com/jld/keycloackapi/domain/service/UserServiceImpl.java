@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 	private RestTemplate restTemplate = new RestTemplate();
 
 	public UserServiceImpl(@Value("${baseUri}") String baseUri) {
-		this.baseUri = baseUri;
+		this.baseUri = baseUri + "/users";
 	}
 
 
