@@ -1,35 +1,37 @@
 package com.jld.keycloackapi.domain.service;
-
 import com.jld.keycloackapi.domain.dto.UserDTO;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
-
+@Configuration
 @Service
 public class UserService implements IUserService {
 
-	@Value("${keycloak.auth-server-url}")
-	String baseUri;
-
+	private String baseUri;
 	@Value("${keycloak.realm}")
 	String realm;
 
 	private RestTemplate restTemplate = new RestTemplate();
 
-	private static final String PATH = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
+
+	public UserService(@Value("${baseUri}") String baseUri) {
+		this.baseUri = baseUri;
+
+	}
 
 
 	@Override
 	public ResponseEntity<String> getUser(String authorization, String id) {
 		try{
 			return restTemplate.exchange(
-					PATH + "/" + id,
+					baseUri + "/" + id,
 					HttpMethod.GET,
 					getHttpEntity(authorization),
 					String.class
@@ -42,7 +44,7 @@ public class UserService implements IUserService {
 	@Override
 	public ResponseEntity<String> getAllUsers(String authorization) {
 		return restTemplate.exchange(
-			PATH,
+				baseUri,
 			HttpMethod.GET,
 			getHttpEntity(authorization),
 			String.class,
@@ -54,7 +56,7 @@ public class UserService implements IUserService {
 	public HttpStatus deleteUser(String authorization, String id) {
 		try {
 			restTemplate.exchange(
-				PATH + "/" + id,
+					baseUri + "/" + id,
 				HttpMethod.DELETE,
 				getHttpEntity(authorization),
 				Void.class
@@ -69,7 +71,7 @@ public class UserService implements IUserService {
 	public ResponseEntity<UserRepresentation> createUser(String authorization, UserDTO userDTO) {
 		try {
 			return restTemplate.exchange(
-					PATH,
+					baseUri,
 					HttpMethod.POST,
 					getHttpEntity(authorization, userDTO),
 					UserRepresentation.class
@@ -84,7 +86,7 @@ public class UserService implements IUserService {
 	public ResponseEntity<UserRepresentation> updateUser(String authorization, UserDTO userDTO, String id) {
 		try {
 			return new ResponseEntity<>(restTemplate.exchange(
-					PATH + "/" + id,
+					baseUri + "/" + id,
 					HttpMethod.PUT,
 					getHttpEntity(authorization, userDTO),
 					UserRepresentation.class
@@ -98,7 +100,7 @@ public class UserService implements IUserService {
 	public ResponseEntity<UserRepresentation> updateUserPassword(String authorization, UserDTO userDTO, String id) {
 		try {
 			return new ResponseEntity<>(restTemplate.exchange(
-					PATH + "/" + id,
+					baseUri + "/" + id,
 					HttpMethod.PUT,
 					getHttpEntity(authorization, userDTO),
 					UserRepresentation.class
