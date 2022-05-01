@@ -26,7 +26,6 @@ public class UserDTO {
         this.enabled = enabled;
     }
 
-
     public String getEmail() {
         return email;
     }

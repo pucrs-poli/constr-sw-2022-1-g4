@@ -33,4 +33,7 @@ public class LoginRequestBody {
 		return password;
 	}
 
+	public String getGrant_type() {
+		return grant_type;
+	}
 }
