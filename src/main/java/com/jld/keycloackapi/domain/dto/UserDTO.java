@@ -3,16 +3,35 @@ package com.jld.keycloackapi.domain.dto;
 
 public class UserDTO {
 
+    private boolean enabled;
+    private String username;
     private String email;
     private String password;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(final String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -20,24 +39,24 @@ public class UserDTO {
         return password;
     }
 
-    public void setPassword(final String password) {
+    public void setPassword( String password) {
         this.password = password;
     }
 
     public String getFirstname() {
-        return firstname;
+        return firstName;
     }
 
-    public void setFirstname(final String firstname) {
-        this.firstname = firstname;
+    public void setFirstname( String firstname) {
+        this.firstName = firstname;
     }
 
     public String getLastname() {
-        return lastname;
+        return lastName;
     }
 
-    public void setLastname(final String lastname) {
-        this.lastname = lastname;
+    public void setLastname( String lastname) {
+        this.lastName = lastname;
     }
 
 }

@@ -20,23 +20,27 @@ public class UserService implements IUserService {
 	@Value("${keycloak.realm}")
 	String realm;
 
-	private final RestTemplate restTemplate = new RestTemplate();
+	private RestTemplate restTemplate = new RestTemplate();
 
-	private static final String PATH = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users/";
+	private static final String PATH = "http://localhost:8080/auth/admin/realms/oauth2-demo-realm/users";
 
 
 	@Override
-	public ResponseEntity<String> getUser(final String authorization, final String id) {
-		return restTemplate.exchange(
-			PATH + id,
-			HttpMethod.GET,
-			getHttpEntity(authorization),
-			String.class
-		);
+	public ResponseEntity<String> getUser(String authorization, String id) {
+		try{
+			return restTemplate.exchange(
+					PATH + "/" + id,
+					HttpMethod.GET,
+					getHttpEntity(authorization),
+					String.class
+			);
+		}catch (Exception ignored){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@Override
-	public ResponseEntity<String> getAllUsers(final String authorization) {
+	public ResponseEntity<String> getAllUsers(String authorization) {
 		return restTemplate.exchange(
 			PATH,
 			HttpMethod.GET,
@@ -47,53 +51,66 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public HttpStatus deleteUser(final String authorization, final String id) {
+	public HttpStatus deleteUser(String authorization, String id) {
 		try {
 			restTemplate.exchange(
-				PATH + id,
+				PATH + "/" + id,
 				HttpMethod.DELETE,
 				getHttpEntity(authorization),
 				Void.class
 			);
 			return HttpStatus.OK;
 		} catch (Exception ignored) {
-			return HttpStatus.BAD_REQUEST;
+			return HttpStatus.NOT_FOUND;
+		}
+	}
 
+	@Override
+	public ResponseEntity<UserRepresentation> createUser(String authorization, UserDTO userDTO) {
+		try {
+			return restTemplate.exchange(
+					PATH,
+					HttpMethod.POST,
+					getHttpEntity(authorization, userDTO),
+					UserRepresentation.class
+			);
+		}catch (Exception ignored){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
 	}
 
 	@Override
-	public ResponseEntity<UserRepresentation> createUser(final String authorization, final UserDTO userDTO) {
-		return restTemplate.exchange(
-			PATH,
-			HttpMethod.POST,
-			getHttpEntity(authorization, userDTO),
-			UserRepresentation.class
-		);
+	public ResponseEntity<UserRepresentation> updateUser(String authorization, UserDTO userDTO, String id) {
+		try {
+			return new ResponseEntity<>(restTemplate.exchange(
+					PATH + "/" + id,
+					HttpMethod.PUT,
+					getHttpEntity(authorization, userDTO),
+					UserRepresentation.class
+			).getBody(),HttpStatus.OK);
+		}catch (Exception ignored){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@Override
-	public ResponseEntity<UserRepresentation> updateUser(final String authorization, final UserDTO userDTO, final String id) {
-		return restTemplate.exchange(
-			PATH + id,
-			HttpMethod.PUT,
-			getHttpEntity(authorization, userDTO),
-			UserRepresentation.class
-		);
+	public ResponseEntity<UserRepresentation> updateUserPassword(String authorization, UserDTO userDTO, String id) {
+		try {
+			return new ResponseEntity<>(restTemplate.exchange(
+					PATH + "/" + id,
+					HttpMethod.PUT,
+					getHttpEntity(authorization, userDTO),
+					UserRepresentation.class
+			).getBody(),HttpStatus.OK);
+		}catch (Exception ignored){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+
 	}
 
-	@Override
-	public ResponseEntity<UserRepresentation> updateUserPassword(final String authorization, final UserDTO userDTO, final String id) {
-		return restTemplate.exchange(
-			PATH + id,
-			HttpMethod.PUT,
-			getHttpEntity(authorization, userDTO),
-			UserRepresentation.class
-		);
-	}
-
-	private CredentialRepresentation credentialRepresentation(final UserDTO userDTO) {
+	private CredentialRepresentation credentialRepresentation(UserDTO userDTO) {
 		CredentialRepresentation password = new CredentialRepresentation();
 		password.setTemporary(false);
 		password.setType(CredentialRepresentation.PASSWORD);
@@ -101,10 +118,10 @@ public class UserService implements IUserService {
 		return password;
 	}
 
-	private UserRepresentation userRepresentation(final UserDTO userDTO, final CredentialRepresentation passwords){
+	private UserRepresentation userRepresentation(UserDTO userDTO, CredentialRepresentation passwords){
 		UserRepresentation user = new UserRepresentation();
-		user.setEnabled(true);
-		user.setUsername(userDTO.getEmail());
+		user.setEnabled(userDTO.getEnabled());
+		user.setUsername(userDTO.getUsername());
 		user.setFirstName(userDTO.getFirstname());
 		user.setLastName(userDTO.getLastname());
 		user.setEmail(userDTO.getEmail());
@@ -112,14 +129,14 @@ public class UserService implements IUserService {
 		return user;
 	}
 
-	private HttpEntity getHttpEntity(final String authorization) {
+	private HttpEntity getHttpEntity(String authorization) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.add("Authorization", authorization);
 		return new HttpEntity<>(headers);
 	}
 
-	private HttpEntity getHttpEntity(final String authorization, final UserDTO userDTO) {
+	private HttpEntity getHttpEntity(String authorization, UserDTO userDTO) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.add("Authorization", authorization);
