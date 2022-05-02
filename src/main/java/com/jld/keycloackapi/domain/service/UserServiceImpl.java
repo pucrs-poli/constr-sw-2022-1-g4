@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ResponseEntity<String> getAllUsers(String authorization) {
+		System.out.println(baseUri);
 		return restTemplate.exchange(
 			baseUri,
 			HttpMethod.GET,
@@ -129,6 +130,16 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
+	private UserRepresentation userRepresentation(UserDTO userDTO){
+		UserRepresentation user = new UserRepresentation();
+		user.setEnabled(userDTO.getEnabled());
+		user.setUsername(userDTO.getUsername());
+		user.setFirstName(userDTO.getFirstname());
+		user.setLastName(userDTO.getLastname());
+		user.setEmail(userDTO.getEmail());
+		return user;
+	}
+
 	private HttpEntity getHttpEntity(String authorization) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -140,6 +151,7 @@ public class UserServiceImpl implements UserService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		headers.add("Authorization", authorization);
+		if (userDTO.getPassword()==null || userDTO.getPassword().isEmpty())return new HttpEntity<>(userRepresentation(userDTO),headers);
 		return new HttpEntity<>(userRepresentation(userDTO, credentialRepresentation(userDTO)),headers);
 	}
 
