@@ -11,7 +11,7 @@ public interface UserService {
 
     ResponseEntity<String> getAllUsers(String Authorization);
 
-    ResponseEntity<UserRepresentation> createUser(String Authorization, UserDTO userDTO);
+    ResponseEntity<String> createUser(String Authorization, UserDTO userDTO);
 
     HttpStatus deleteUser(String Authorization, String id);
 

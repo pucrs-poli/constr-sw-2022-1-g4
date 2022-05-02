@@ -67,15 +67,33 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ResponseEntity<UserRepresentation> createUser(String authorization, UserDTO userDTO) {
+	public ResponseEntity<String> createUser(String authorization, UserDTO userDTO) {
 		try {
-			return restTemplate.exchange(
+			restTemplate.exchange(
 				baseUri,
 				HttpMethod.POST,
 				getHttpEntity(authorization, userDTO),
 				UserRepresentation.class
 			);
+			return getUserByUsername(authorization,userDTO);
 		}catch (Exception ignored){
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	public ResponseEntity<String> getUserByUsername(String authorization, UserDTO userDTO){
+		String url = baseUri + "?username="+userDTO.getUsername();
+
+		try {
+			return new ResponseEntity<>(restTemplate.exchange(
+					url,
+					HttpMethod.GET,
+					getHttpEntity(authorization),
+					String.class
+			).getBody(),HttpStatus.CREATED);
+		}catch (Exception ignored){
+			System.out.println("error in get user by username");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 

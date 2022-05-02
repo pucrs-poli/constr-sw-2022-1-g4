@@ -47,7 +47,7 @@ public class LoginServiceImpl implements LoginService {
 		);
 
 		accessTokenManager.add(responseEntity.getBody().getRefreshToken(), responseEntity.getBody().getExpiresIn(),loginRequest.getClient_secret());
-		accessTokenManager.logged = true;
+
 
 		accessTokenManager.start();
 		return responseEntity;

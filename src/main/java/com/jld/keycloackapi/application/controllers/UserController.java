@@ -26,7 +26,7 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserRepresentation> createUser(@RequestHeader("Authorization") String Authorization, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<String> createUser(@RequestHeader("Authorization") String Authorization, @RequestBody UserDTO userDTO) {
 		return userService.createUser(Authorization,userDTO);
 	}
 

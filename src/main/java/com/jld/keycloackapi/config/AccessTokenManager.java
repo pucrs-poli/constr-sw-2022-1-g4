@@ -44,7 +44,8 @@ public class AccessTokenManager extends Thread {
 
     @Override
     public void run() {
-        while (logged){
+        this.logged = true;
+        while (this.logged){
             try {
                 Thread.sleep(expires_in);
                 ResponseEntity<AccessTokenResponse> responseEntity = tokenService.refreshToken(new RefreshTokenRequestBody(client_id, grant_type, client_secret, refreshToken));
