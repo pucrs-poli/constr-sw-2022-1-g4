@@ -18,5 +18,4 @@ DELETE /users/{id}: exclusão lógica de um usuário
 ## Tecnologias
 
 - Springboot
-- Swagger
 - Keycloak
