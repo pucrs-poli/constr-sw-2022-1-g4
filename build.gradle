@@ -14,15 +14,18 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.keycloak.bom', name: 'keycloak-adapter-bom', version: '18.0.0'
-    implementation group: 'org.keycloak', name: 'keycloak-authz-client', version: '18.0.0'
-    implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.0.RC2'
-    implementation group: 'org.keycloak', name: 'keycloak-spring-boot-starter', version: '12.0.4'
-    implementation group: 'org.keycloak', name: 'keycloak-admin-client', version: '12.0.4'
+    implementation 'org.keycloak.bom:keycloak-adapter-bom:18.0.0'
+    implementation 'org.keycloak:keycloak-authz-client:18.0.0'
+    implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.6.6'
+    implementation 'org.keycloak:keycloak-spring-boot-starter:18.0.0'
+    implementation 'org.keycloak:keycloak-admin-client:18.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-    implementation 'org.testng:testng:7.1.0'
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.testng:testng:7.5'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
