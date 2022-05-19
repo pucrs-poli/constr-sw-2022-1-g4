@@ -5,6 +5,7 @@ services:
     image: mongo:latest
     volumes:
       - mongodb-data:/data/mongodb
+    container_name: "api-mongo"
     ports:
       - 27017:27017
     environment:
@@ -16,5 +17,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: "api-resource"
     ports:
       - 8003:8003

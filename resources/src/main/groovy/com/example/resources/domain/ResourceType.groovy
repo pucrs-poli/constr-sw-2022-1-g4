@@ -8,6 +8,8 @@ class ResourceType {
 
     private String categoria;
 
+    private boolean enabled;
+
     public String getCategoria() {
         return categoria;
     }

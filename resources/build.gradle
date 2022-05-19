@@ -2,7 +2,12 @@ plugins {
 	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'groovy'
+	id 'java'
 }
+
+jar {
+}
+
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
@@ -30,6 +35,3 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
