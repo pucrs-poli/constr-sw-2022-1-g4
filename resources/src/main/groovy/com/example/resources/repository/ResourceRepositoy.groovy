@@ -11,4 +11,5 @@ public interface ResourceRepositoy extends MongoRepository{
 
     public Resource findByName(String name);
     Resource save(Resource resource);
+    public Resource findById(String id);
 }
