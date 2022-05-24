@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "resource")
 @Data
-@Builder
 @Getter
 @Setter
 class Resource {

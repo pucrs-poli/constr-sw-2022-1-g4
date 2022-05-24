@@ -4,7 +4,7 @@ services:
   mongo:
     image: mongo:latest
     volumes:
-      - mongodb-data:/data/mongodb
+      - ./mongodb-data
     container_name: "api-mongo"
     ports:
       - 27017:27017

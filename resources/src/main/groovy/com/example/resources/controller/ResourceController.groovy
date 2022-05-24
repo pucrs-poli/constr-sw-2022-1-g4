@@ -10,21 +10,28 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-@RestController("/resource")
+@RestController
+@RequestMapping("/resource")
 class ResourceController {
+
     private ResourceService service;
+
+    ResourceController(ResourceService service) {
+        this.service = service
+    }
 
     @PostMapping("/create")
     public ResponseEntity<Resource> createUser(@RequestBody Resource resource){
-        service.createResource(Authorization, resource)
+        service.createResource(resource)
     }
 
 //  GET /resource: recuperação de todos os objetos
 //  @Todo precisa retornar somente os obg com enabled true
-    @GetMapping
+   // @GetMapping
     public ResponseEntity<Resource> getAll(){
 
     }
@@ -37,16 +44,9 @@ class ResourceController {
 
 //    GET /resource/?atributo=valor: recuperação de um objeto por uma query string simples
     @GetMapping
-    public ResponseEntity<Resource> getResourceByAttribute(@RequestParam(required = false) String id,
-                                                           @RequestParam(required = false) String name,
-                                                           @RequestParam(required = false) Long id_last_user,
-                                                           @RequestParam(required = false) String description,
-                                                           @RequestParam(required = false) String model,
-                                                           @RequestParam(required = false) String characteristics,
-                                                           @RequestParam(required = false) String enabled){
+    public ResponseEntity<Resource> getResourceByAttribute(@RequestParam(required = false) String attribute){
 
     }
-
 
     //    DELETE /resource/id: exclusão de um objeto
     // delete logico (muda enabled p falso)
@@ -67,7 +67,7 @@ class ResourceController {
 
     }
 //    GET /resource/?atributo=valor&atributo>=valor&etc: recuperação de um objeto por uma query string complexa
-    @GetMapping
+    //@GetMapping
     public ResponseEntity<Resource> getResourceByAttributes(@RequestParam(required = false) String id,
                                                            @RequestParam(required = false) String name,
                                                            @RequestParam(required = false) Long id_last_user,

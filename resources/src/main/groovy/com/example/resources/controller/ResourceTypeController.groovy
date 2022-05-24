@@ -1,6 +1,8 @@
 package com.example.resources.controller
 
+import com.example.resources.domain.ResourceType
 import com.example.resources.service.ResourceTypeService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -9,33 +11,42 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-@RestController("/resourcetype")
-class ResourceType {
+@RestController
+@RequestMapping("/resourcetype")
+class ResourceTypeController {
+
     private ResourceTypeService service;
+
+    ResourceTypeController(ResourceTypeService service) {
+        this.service = service
+    }
 
     @PostMapping("/create")
     public ResponseEntity<ResourceType> create(@RequestBody ResourceType resourceType){
-        service.createType(Authorization, resourceType)
+        println "Entrei no create"
+        service.createResource(resourceType)
+        return new ResponseEntity<ResourceType>(HttpStatus.CREATED)
     }
 
 //  GET /resourcetype: recuperação de todos os objetos Resource Type
 //  @Todo precisa retornar somente os obg com enabled true
     @GetMapping
-    public ResponseEntity<ResourceType> getAllResourceTypes(){
-        service.getAllResourceTypes()
+    public ResponseEntity<List<ResourceType>> getAllResourceTypes(){
+        return ResponseEntity.ok(service.getAllResourceTypes())
     }
 
 //    GET /resourcetype/id: recuperação de um objeto pelo seu id
     @GetMapping("/{id}")
     public ResponseEntity<ResourceType> getResource(@PathVariable("id") String id){
-        service.getById(id)
+        return ResponseEntity.ok(service.getById(id))
     }
 
 //    GET /resourcetype/?atributo=valor: recuperação de um objeto por uma query string simples
-    @GetMapping
+    //@GetMapping
     public ResponseEntity<ResourceType> getResourceByAttribute(@RequestParam(required = false) String id,
                                                            @RequestParam(required = false) String name){
 
@@ -61,7 +72,7 @@ class ResourceType {
         // How to?
     }
 //    GET /resourcetype/?atributo=valor&atributo>=valor&etc: recuperação de um objeto por uma query string complexa
-    @GetMapping
+    //@GetMapping
     public ResponseEntity<ResourceType> getResourceByAttributes(@RequestParam(required = false) String id,
                                                             @RequestParam(required = false) String name){
         // How to?

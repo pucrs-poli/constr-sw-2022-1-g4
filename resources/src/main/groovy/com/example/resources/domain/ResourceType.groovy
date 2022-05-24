@@ -1,20 +1,18 @@
 package com.example.resources.domain
 
+import groovy.transform.Canonical
+import lombok.Builder
+import lombok.Data
+import lombok.Getter
+import lombok.Setter
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
 
+@Document(collection = "resourceType")
+@Canonical
 class ResourceType {
     @Id
-    public String id;
-
-    private String categoria;
-
-    private boolean enabled;
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
+    String id
+    String categoria
+    boolean enabled
 }
