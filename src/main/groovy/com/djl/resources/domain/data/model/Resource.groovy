@@ -2,7 +2,7 @@ package com.djl.resources.domain.data.model
 
 class Resource {
 
-    private String id;
+    private final String id;
     private String name;
     private Long id_last_user;
     private String description;
@@ -10,7 +10,7 @@ class Resource {
     private String characteristics;
 
     Resource(ResourceBuilder builder) {
-        id = builder.id
+        id = UUID.randomUUID().toString()
         name = builder.name
         id_last_user = builder.id_last_user
         description = builder.description
@@ -20,10 +20,6 @@ class Resource {
 
     String getId() {
         return id
-    }
-
-    void setId(String id) {
-        this.id = id
     }
 
     String getNome() {

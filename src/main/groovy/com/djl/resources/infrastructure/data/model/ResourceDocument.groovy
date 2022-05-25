@@ -1,5 +1,6 @@
 package com.djl.resources.infrastructure.data.model
 
+import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
@@ -7,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 class ResourceDocument {
 
     @Id
-    public String id;
+    private ObjectId id;
     private String name;
     private Long id_last_user;
     private String description;
@@ -17,10 +18,6 @@ class ResourceDocument {
 
     String getId() {
         return id
-    }
-
-    void setId(String id) {
-        this.id = id
     }
 
     String getNome() {

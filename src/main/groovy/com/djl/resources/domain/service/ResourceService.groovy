@@ -3,6 +3,7 @@ package com.djl.resources.domain.service
 
 import com.djl.resources.domain.data.model.reponses.Response
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.restdocs.operation.Parameters
 import org.springframework.stereotype.Service
 
 @Service
@@ -32,8 +33,8 @@ class ResourceService {
         return makeResponse(received)
     }
 
-    Response getByAttribute(){
-
+    Response getByAttribute(String query){
+        //Parameters parameters = QueryStringParser
     }
 
     Response deleteById(String id){
