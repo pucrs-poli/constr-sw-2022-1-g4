@@ -13,4 +13,6 @@ interface ResourceTypeMongoRepository extends MongoRepository<ResourceTypeDocume
     @Query("{'enabled': true}")
     List<ResourceTypeDocument> findAllEnabled()
 
+    List<ResourceTypeDocument> findAllByAttributes()
+
 }

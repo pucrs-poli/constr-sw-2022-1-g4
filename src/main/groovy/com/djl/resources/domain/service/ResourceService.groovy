@@ -2,8 +2,10 @@ package com.djl.resources.domain.service
 
 
 import com.djl.resources.domain.data.model.reponses.Response
+import org.apache.lucene.queryparser.classic.QueryParser
+import org.apache.lucene.search.Query
+import org.apache.lucene.util.QueryBuilder
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.restdocs.operation.Parameters
 import org.springframework.stereotype.Service
 
 @Service
@@ -34,7 +36,8 @@ class ResourceService {
     }
 
     Response getByAttribute(String query){
-        //Parameters parameters = QueryStringParser
+        Query parsedQuery = QueryParser().parse(query)
+
     }
 
     Response deleteById(String id){

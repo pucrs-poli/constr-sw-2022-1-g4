@@ -55,6 +55,7 @@ class ResourceController {
 //    GET /resource/?atributo=valor&atributo>=valor&etc: recuperação de um objeto por uma query string complexa
     @GetMapping("/?{query}")
     @ResponseBody getResourceByAttributes(@PathVariable("query") String query){
+        return service.getByAttribute(query);
     }
 
 }
