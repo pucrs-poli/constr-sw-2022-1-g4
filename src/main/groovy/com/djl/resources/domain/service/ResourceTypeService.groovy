@@ -1,6 +1,6 @@
 package com.djl.resources.domain.service
 
-
+import com.djl.resources.domain.data.model.reponses.HTTPResponse
 import com.djl.resources.domain.data.model.reponses.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -17,14 +17,14 @@ class ResourceTypeService {
 
     Response createResourceType(com.djl.resources.domain.data.model.ResourceType resourceType){
         Optional<com.djl.resources.domain.data.model.ResourceType> received = resourceTypeRepository.create(resourceType);
-        if (received.isPresent()) return new com.djl.resources.domain.data.model.reponses.SuccessResponse(com.djl.resources.domain.data.HTTPResponse.CREATED, received.get())
-        return new com.djl.resources.domain.data.model.reponses.FailureResponse(com.djl.resources.domain.data.HTTPResponse.CONFLICT, "ResourceType already exists")
+        if (received.isPresent()) return new com.djl.resources.domain.data.model.reponses.SuccessResponse(HTTPResponse.CREATED, received.get())
+        return new com.djl.resources.domain.data.model.reponses.FailureResponse(HTTPResponse.CONFLICT, "ResourceType already exists")
 
     }
 
     Response getAllResourceTypes(){
         List<com.djl.resources.domain.data.model.ResourceType> received = resourceTypeRepository.findAllEnabled()
-        return new com.djl.resources.domain.data.model.reponses.SuccessResponse(com.djl.resources.domain.data.HTTPResponse.OK, received)
+        return new com.djl.resources.domain.data.model.reponses.SuccessResponse(HTTPResponse.OK, received)
     }
 
     Response getById(String id){
@@ -52,8 +52,8 @@ class ResourceTypeService {
     }
 
     Response makeResponse(Optional<com.djl.resources.domain.data.model.ResourceType> received) {
-        if (received.isPresent()) return new com.djl.resources.domain.data.model.reponses.SuccessResponse(com.djl.resources.domain.data.HTTPResponse.OK, received.get())
-        return new com.djl.resources.domain.data.model.reponses.FailureResponse(com.djl.resources.domain.data.HTTPResponse.NOT_FOUND, "Resource not found")
+        if (received.isPresent()) return new com.djl.resources.domain.data.model.reponses.SuccessResponse(HTTPResponse.OK, received.get())
+        return new com.djl.resources.domain.data.model.reponses.FailureResponse(HTTPResponse.NOT_FOUND, "Resource not found")
     }
 
 }

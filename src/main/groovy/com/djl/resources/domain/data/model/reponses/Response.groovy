@@ -2,13 +2,13 @@ package com.djl.resources.domain.data.model.reponses
 
 class Response {
 
-    private final com.djl.resources.domain.data.HTTPResponse response
+    private final HTTPResponse response
 
-    Response(com.djl.resources.domain.data.HTTPResponse response) {
+    Response(HTTPResponse response) {
         this.response = response
     }
 
-    com.djl.resources.domain.data.HTTPResponse getResponse() {
+    HTTPResponse getResponse() {
         return response
     }
 }

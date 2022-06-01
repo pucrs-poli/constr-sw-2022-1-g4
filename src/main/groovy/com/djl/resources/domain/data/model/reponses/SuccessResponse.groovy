@@ -1,6 +1,6 @@
 package com.djl.resources.domain.data.model.reponses
 
-import com.djl.resources.domain.data.HTTPResponse
+
 import com.djl.resources.domain.data.model.Resource
 import com.djl.resources.domain.data.model.ResourceType
 

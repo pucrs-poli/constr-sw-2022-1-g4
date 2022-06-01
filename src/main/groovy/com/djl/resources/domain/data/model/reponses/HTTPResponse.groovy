@@ -1,4 +1,4 @@
-package com.djl.resources.domain.data
+package com.djl.resources.domain.data.model.reponses
 
 enum HTTPResponse {
 

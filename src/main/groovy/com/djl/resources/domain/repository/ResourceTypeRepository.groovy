@@ -1,6 +1,7 @@
 package com.djl.resources.domain.repository
 
 import com.djl.resources.domain.data.model.ResourceType
+import org.springframework.data.mongodb.core.query.Query
 
 interface ResourceTypeRepository {
 
@@ -9,6 +10,8 @@ interface ResourceTypeRepository {
     List<ResourceType> findAllEnabled()
 
     Optional<ResourceType> findById(String id)
+
+    List<ResourceType> findByAttribute(Query query)
 
     Optional<ResourceType> delete(String id)
 

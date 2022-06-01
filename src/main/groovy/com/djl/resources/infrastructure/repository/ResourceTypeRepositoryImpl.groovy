@@ -1,11 +1,11 @@
 package com.djl.resources.infrastructure.repository
 
-
 import com.djl.resources.domain.data.model.ResourceType
 import com.djl.resources.domain.repository.ResourceTypeRepository
 import com.djl.resources.infrastructure.data.mapper.ResourceTypeMapper
 import com.djl.resources.infrastructure.data.model.ResourceTypeDocument
 import com.djl.resources.infrastructure.repository.persistence.ResourceTypeMongoRepository
+import org.apache.lucene.search.Query
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Component
 
@@ -37,6 +37,11 @@ class ResourceTypeRepositoryImpl implements ResourceTypeRepository {
         Optional<ResourceTypeDocument> byId = mongoRepository.findById(new ObjectId(id))
         if (byId.isEmpty()) return Optional.empty()
         return byId.map(mapper::convert)
+    }
+
+    @Override
+    List<ResourceType> findByAttribute(Query query) {
+        List<ResourceTypeDocument> allResourceTypes = mongoRepository.findAll();
     }
 
     @Override

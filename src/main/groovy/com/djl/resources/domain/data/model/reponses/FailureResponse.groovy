@@ -1,7 +1,5 @@
 package com.djl.resources.domain.data.model.reponses
 
-import com.djl.resources.domain.data.HTTPResponse
-
 class FailureResponse extends Response{
 
     String message
