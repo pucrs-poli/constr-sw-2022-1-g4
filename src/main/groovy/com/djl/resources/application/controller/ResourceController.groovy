@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController("/resources")
+@RestController
+@RequestMapping("/resources")
 class ResourceController {
 
     private ResourceService service;
@@ -46,7 +48,7 @@ class ResourceController {
         return service.updateById(id, resource)
     }
 
-    @PatchMapping
+    @PatchMapping("/{id}")
     HttpEntity<Resource> update(@PathVariable("id") String id, @RequestBody Resource resource){
         return service.patch(id, resource)
     }
