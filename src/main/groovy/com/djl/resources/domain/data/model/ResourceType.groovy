@@ -1,22 +1,10 @@
 package com.djl.resources.domain.data.model
 
-import groovy.transform.Canonical
-import lombok.Builder
-import lombok.Data
-import lombok.Getter
-import lombok.Setter
-import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
-
 class ResourceType {
 
     private String id
-    private String categoria
-
-    ResourceType(ResourceTypeBuilder builder) {
-        this.id = builder.id
-        this.categoria = builder.categoria
-    }
+    private String category
+    private boolean enabled
 
     String getId() {
         return id
@@ -26,27 +14,19 @@ class ResourceType {
         this.id = id
     }
 
-    String getCategoria() {
-        return categoria
+    String getCategory() {
+        return category
     }
 
-    void setCategoria(String categoria) {
-        this.categoria = categoria
+    void setCategory(String category) {
+        this.category = category
     }
 
-    class ResourceTypeBuilder {
+    boolean getEnabled() {
+        return enabled
+    }
 
-        private String id
-        private String categoria
-
-        ResourceTypeBuilder withId(String id) {
-            this.id = id
-            return this
-        }
-
-        ResourceTypeBuilder withCategoria(String categoria) {
-            this.categoria = categoria
-            return this
-        }
+    void setEnabled(boolean enabled) {
+        this.enabled = enabled
     }
 }

@@ -1,7 +1,6 @@
 package com.djl.resources.domain.repository
 
 import com.djl.resources.domain.data.model.ResourceType
-import org.springframework.data.mongodb.core.query.Query
 
 interface ResourceTypeRepository {
 
@@ -11,7 +10,7 @@ interface ResourceTypeRepository {
 
     Optional<ResourceType> findById(String id)
 
-    List<ResourceType> findByAttribute(Query query)
+    List<ResourceType> findByQuery(String query)
 
     Optional<ResourceType> delete(String id)
 

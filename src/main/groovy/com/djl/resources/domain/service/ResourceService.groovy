@@ -1,14 +1,11 @@
 package com.djl.resources.domain.service
 
 import com.djl.resources.domain.data.model.Resource
-import com.djl.resources.domain.data.model.reponses.FailureResponse
-import com.djl.resources.domain.data.model.reponses.HTTPResponse
-import com.djl.resources.domain.data.model.reponses.Response
-import com.djl.resources.domain.data.model.reponses.SuccessResponse
 import com.djl.resources.domain.data.parser.QueryParser
 import com.djl.resources.domain.repository.ResourceRepository
-import org.springframework.data.mongodb.core.query.Query
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -21,47 +18,74 @@ class ResourceService {
         this.resourceRepositoy = resourceRepositoy
     }
 
-    Response createResource(Resource resource){
-        Optional<Resource> received = resourceRepositoy.create(resource);
-        if (received.isPresent()) return new SuccessResponse(HTTPResponse.CREATED, received.get())
-        return new FailureResponse(HTTPResponse.CONFLICT, "Resource already exists")
-
+    ResponseEntity<Resource> createResource(Resource resource){
+        try {
+            Optional<Resource> received = resourceRepositoy.create(resource);
+            if (received.isPresent()) return new ResponseEntity<Resource>(received.get(), HttpStatus.CREATED)
+            return new ResponseEntity<Resource>(HttpStatus.CONFLICT)
+        } catch (Exception exception) {
+            return new ResponseEntity<Resource>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response getAllResources(){
-        List<Resource> received = resourceRepositoy.findAll();
-        return new SuccessResponse(HTTPResponse.OK, received)
+    ResponseEntity<List<Resource>> getAllResources() {
+        try {
+            List<Resource> received = resourceRepositoy.findAll()
+            if (!received.isEmpty()) return ResponseEntity.ok(received)
+            return new ResponseEntity<List<Resource>>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<List<Resource>>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response getById(String id){
-        Optional<Resource> received = resourceRepositoy.findById(id)
-        return makeResponse(received)
+    ResponseEntity<Resource> getById(String id){
+        try {
+            Optional<Resource> received = resourceRepositoy.findById(id)
+            if (received.isPresent()) return ResponseEntity.ok(received.get())
+            return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<Resource>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response getByAttribute(String query){
-        Query parsedQuery = QueryParser.parse(query)
-        resourceRepositoy.findByAttribute(parsedQuery)
-
+    ResponseEntity<List<Resource>> getByAttribute(String query){
+        try {
+            List<Resource> received = resourceRepositoy.findByAttribute(new QueryParser().parse(query))
+            if (!received.isEmpty()) return ResponseEntity.ok(received)
+            return new ResponseEntity<List<Resource>>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<List<Resource>>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response deleteById(String id){
-        Optional<Resource> received = resourceRepositoy.delete(id)
-        return makeResponse(received)
+    ResponseEntity<Resource> deleteById(String id){
+        try {
+            Optional<Resource> received = resourceRepositoy.delete(id)
+            if (!received.isEmpty()) return new ResponseEntity<Resource>(HttpStatus.NO_CONTENT)
+            return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<Resource>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response updateById(String id, Resource resource){
-        Optional<Resource> received = resourceRepositoy.update(id, resource)
-        return makeResponse(received)
+    ResponseEntity<Resource> updateById(String id, Resource resource){
+        try {
+            Optional<Resource> received = resourceRepositoy.update(id, resource)
+            if (received.isPresent()) return new ResponseEntity<Resource>(HttpStatus.OK)
+            return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<Resource>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response patch(String id, Resource resource){
-        Optional<Resource> received = resourceRepositoy.patch(id, resource)
-        return makeResponse(received)
-    }
-
-    Response makeResponse(Optional<Resource> received) {
-        if (received.isPresent()) return new SuccessResponse(HTTPResponse.OK, received.get())
-        return new FailureResponse(HTTPResponse.NOT_FOUND, "Resource not found")
+    ResponseEntity<Resource> patch(String id, Resource resource){
+        try {
+            Optional<Resource> received = resourceRepositoy.patch(id, resource)
+            if (received.isPresent()) return new ResponseEntity<Resource>(HttpStatus.OK)
+            return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<Resource>(HttpStatus.BAD_REQUEST)
+        }
     }
 
 }

@@ -1,59 +1,92 @@
 package com.djl.resources.domain.service
 
-import com.djl.resources.domain.data.model.reponses.HTTPResponse
-import com.djl.resources.domain.data.model.reponses.Response
+import com.djl.resources.domain.data.model.ResourceType
+import com.djl.resources.domain.data.parser.QueryParser
+import com.djl.resources.domain.repository.ResourceTypeRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
 class ResourceTypeService {
 
-    private com.djl.resources.domain.repository.ResourceTypeRepository resourceTypeRepository;
+    private ResourceTypeRepository resourceTypeRepository;
 
     @Autowired
-    ResourceTypeService(com.djl.resources.domain.repository.ResourceTypeRepository resourceTypeRepository) {
+    ResourceTypeService(ResourceTypeRepository resourceTypeRepository) {
         this.resourceTypeRepository = resourceTypeRepository
     }
 
-    Response createResourceType(com.djl.resources.domain.data.model.ResourceType resourceType){
-        Optional<com.djl.resources.domain.data.model.ResourceType> received = resourceTypeRepository.create(resourceType);
-        if (received.isPresent()) return new com.djl.resources.domain.data.model.reponses.SuccessResponse(HTTPResponse.CREATED, received.get())
-        return new com.djl.resources.domain.data.model.reponses.FailureResponse(HTTPResponse.CONFLICT, "ResourceType already exists")
-
+    HttpEntity<ResourceType> createResourceType(ResourceType resourceType) {
+        try {
+            Optional<ResourceType> received = resourceTypeRepository.create(resourceType);
+            if (received.isPresent()) return new ResponseEntity<ResourceType>(received.get(), HttpStatus.CREATED)
+            return new ResponseEntity<ResourceType>(HttpStatus.CONFLICT)
+        } catch (Exception exception) {
+            return new ResponseEntity<ResourceType>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response getAllResourceTypes(){
-        List<com.djl.resources.domain.data.model.ResourceType> received = resourceTypeRepository.findAllEnabled()
-        return new com.djl.resources.domain.data.model.reponses.SuccessResponse(HTTPResponse.OK, received)
+    HttpEntity<List<ResourceType>> getAllResourceTypes() {
+        try {
+            List<ResourceType> received = resourceTypeRepository.findAllEnabled()
+            if (!received.isEmpty()) return ResponseEntity.ok(received)
+            return new ResponseEntity<List<ResourceType>>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<List<ResourceType>>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response getById(String id){
-        Optional<com.djl.resources.domain.data.model.ResourceType> received = resourceTypeRepository.findById(id)
-        return makeResponse(received)
+    HttpEntity<ResourceType> getById(String id) {
+        try {
+            Optional<ResourceType> received = resourceTypeRepository.findById(id)
+            if (received.isPresent()) return ResponseEntity.ok(received.get())
+            return new ResponseEntity<ResourceType>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<ResourceType>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response getByAttribute() {
-
+    HttpEntity<List<ResourceType>> getByQuery(String query) {
+        try {
+            List<ResourceType> received = resourceTypeRepository.findByQuery(new QueryParser().parse(query))
+            if (!received.isEmpty()) return ResponseEntity.ok(received)
+            return new ResponseEntity<List<ResourceType>>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<List<ResourceType>>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response deleteById(String id){
-        Optional<com.djl.resources.domain.data.model.ResourceType> received = resourceTypeRepository.delete(id)
-        return makeResponse(received)
+    HttpEntity<ResourceType> deleteById(String id) {
+        try {
+            Optional<ResourceType> received = resourceTypeRepository.delete(id)
+            if (received.isPresent()) return new ResponseEntity<ResourceType>(HttpStatus.NO_CONTENT)
+            return new ResponseEntity<ResourceType>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<ResourceType>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response updateById(String id, com.djl.resources.domain.data.model.ResourceType resourceType){
-        Optional<com.djl.resources.domain.data.model.ResourceType> received = resourceTypeRepository.update(id, resourceType)
-        return makeResponse(received)
+    HttpEntity<ResourceType> updateById(String id, ResourceType resourceType) {
+        try {
+            Optional<ResourceType> received = resourceTypeRepository.update(id, resourceType)
+            if (received.isPresent()) return new ResponseEntity<ResourceType>(HttpStatus.OK)
+            return new ResponseEntity<ResourceType>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<ResourceType>(HttpStatus.BAD_REQUEST)
+        }
     }
 
-    Response patch(String id, com.djl.resources.domain.data.model.ResourceType resourceType){
-        Optional<com.djl.resources.domain.data.model.ResourceType> received = resourceTypeRepository.patch(id, resourceType)
-        return makeResponse(received)
-    }
-
-    Response makeResponse(Optional<com.djl.resources.domain.data.model.ResourceType> received) {
-        if (received.isPresent()) return new com.djl.resources.domain.data.model.reponses.SuccessResponse(HTTPResponse.OK, received.get())
-        return new com.djl.resources.domain.data.model.reponses.FailureResponse(HTTPResponse.NOT_FOUND, "Resource not found")
+    HttpEntity<ResourceType> patch(String id, ResourceType resourceType) {
+        try {
+            Optional<ResourceType> received = resourceTypeRepository.patch(id, resourceType)
+            if (received.isPresent()) return new ResponseEntity<ResourceType>(HttpStatus.OK)
+            return new ResponseEntity<ResourceType>(HttpStatus.NOT_FOUND)
+        } catch (Exception exception) {
+            return new ResponseEntity<ResourceType>(HttpStatus.BAD_REQUEST)
+        }
     }
 
 }

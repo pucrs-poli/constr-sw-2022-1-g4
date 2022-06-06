@@ -13,5 +13,11 @@ interface ResourceMongoRepository extends MongoRepository<ResourceDocument, Obje
     @Query("{ 'enabled': true }")
     List<ResourceDocument> findAllEnabled();
 
+    @Query("{ 'name': ?0 }")
+    Optional<ResourceDocument> findByName(String name);
+
+    @Query("{ ?0 }")
+    List<ResourceDocument> findByQuery(String query);
+
 
 }

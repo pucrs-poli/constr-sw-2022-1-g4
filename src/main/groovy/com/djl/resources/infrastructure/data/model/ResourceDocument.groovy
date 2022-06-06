@@ -16,48 +16,48 @@ class ResourceDocument {
     private String characteristics;
     private boolean enabled;
 
-    String getId() {
+    ObjectId getId() {
         return id
     }
 
-    String getNome() {
+    String getName() {
         return name
     }
 
-    void setNome(String nome) {
-        this.name = nome
+    void setName(String name) {
+        this.name = name
     }
 
-    Long getId_ultimo_usuario() {
+    Long getId_last_user() {
         return id_last_user
     }
 
-    void setId_ultimo_usuario(Long id_ultimo_usuario) {
-        this.id_last_user = id_ultimo_usuario
+    void setId_last_user(Long id_last_user) {
+        this.id_last_user = id_last_user
     }
 
-    String getDescricao() {
+    String getDescription() {
         return description
     }
 
-    void setDescricao(String descricao) {
-        this.description = descricao
+    void setDescription(String description) {
+        this.description = description
     }
 
-    String getModelo() {
+    String getModel() {
         return model
     }
 
-    void setModelo(String modelo) {
-        this.model = modelo
+    void setModel(String model) {
+        this.model = model
     }
 
-    String getCaracteristicas() {
+    String getCharacteristics() {
         return characteristics
     }
 
-    void setCaracteristicas(String caracteristicas) {
-        this.characteristics = caracteristicas
+    void setCharacteristics(String characteristics) {
+        this.characteristics = characteristics
     }
 
     boolean getEnabled() {

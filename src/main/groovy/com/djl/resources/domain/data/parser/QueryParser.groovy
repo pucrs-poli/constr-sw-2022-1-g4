@@ -1,37 +1,21 @@
 package com.djl.resources.domain.data.parser
 
 import com.djl.resources.domain.data.exception.InvalidOperatorException
-import org.springframework.data.mongodb.core.query.Criteria
 
 import static MongoOperator.*
 
-import com.djl.resources.domain.data.model.Attribute
-import org.springframework.data.mongodb.core.query.Query
+class QueryParser {
 
-class QueryParser { //sql injection flashbacks
-
-    Query parse(final String query) {
-        ArrayList<Attribute> convertedQuery = new ArrayList<>()
+    String parse(final String query) {
+        LinkedList<String> convertedQuery = new ArrayList<>()
         query.split("&").collect().forEach( (attribute) -> convertedQuery.add(parseAttribute((String)attribute)))
 
-        ArrayList<Criteria> mongoCriterias = new ArrayList<>()
-        convertedQuery.forEach( (attribute) -> mongoCriterias.add(getCriteriaFromAttribute(attribute)))
+        String queryString = ""
+        convertedQuery.forEach( (attribute) -> queryString + attribute.toString() + ",")
 
-        Query mongoQuery = new Query();
-        mongoCriterias.forEach( (criteria) -> mongoQuery.addCriteria(criteria))
+        queryString.substring(0, queryString.length() - 1)
 
-        return mongoQuery.toString()
-    }
-
-    private Criteria getCriteriaFromAttribute(final Attribute attribute) {
-        switch (attribute.getOperator()) {
-            case GTE: return Criteria.where(attribute.getField()).gte(attribute.getValue())
-            case LTE: return Criteria.where(attribute.getField()).lte(attribute.getValue())
-            case NE: return Criteria.where(attribute.getField()).ne(attribute.getValue())
-            case GT: return Criteria.where(attribute.getField()).gt(attribute.getValue())
-            case LT: return Criteria.where(attribute.getField()).lt(attribute.getValue())
-            case EQ: return Criteria.where(attribute.getField()).is(attribute.getValue())
-        }
+        return queryString
     }
 
     private Attribute parseAttribute(final String attribute) {

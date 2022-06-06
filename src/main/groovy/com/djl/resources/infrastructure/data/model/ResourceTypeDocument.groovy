@@ -9,7 +9,7 @@ class ResourceTypeDocument {
 
     @Id
     private ObjectId id
-    private String categoria
+    private String category
     private boolean enabled
 
     String getId() {
@@ -20,12 +20,12 @@ class ResourceTypeDocument {
         this.id = id
     }
 
-    String getCategoria() {
-        return categoria
+    String getCategory() {
+        return category
     }
 
-    void setCategoria(String categoria) {
-        this.categoria = categoria
+    void setCategory(String category) {
+        this.category = category
     }
 
     boolean getEnabled() {

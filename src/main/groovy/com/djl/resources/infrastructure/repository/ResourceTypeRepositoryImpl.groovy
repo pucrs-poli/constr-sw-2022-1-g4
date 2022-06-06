@@ -40,8 +40,8 @@ class ResourceTypeRepositoryImpl implements ResourceTypeRepository {
     }
 
     @Override
-    List<ResourceType> findByAttribute(Query query) {
-        List<ResourceTypeDocument> allResourceTypes = mongoRepository.findAll();
+    List<ResourceType> findByQuery(String query) {
+        return mongoRepository.findByQuery(query).stream().map(mapper::convert).collect()
     }
 
     @Override
@@ -56,6 +56,7 @@ class ResourceTypeRepositoryImpl implements ResourceTypeRepository {
     @Override
     Optional<ResourceType> update(String id, ResourceType resource) {
         if(!mongoRepository.existsById(new ObjectId(resource.getId()))) return Optional.empty()
+        resource.setId(id)
         return Optional.of(mapper.convert(mongoRepository.save(mapper.convertToDocument(resource))))
     }
 
@@ -65,7 +66,7 @@ class ResourceTypeRepositoryImpl implements ResourceTypeRepository {
         if (byId.isEmpty()) return Optional.empty()
         ResourceTypeDocument document = byId.get()
         if(resourceType.getId() != null) document.setId(resourceType.getId())
-        if(resourceType.getCategoria() != null) document.setCategoria(resourceType.getCategoria())
+        if(resourceType.getCategory() != null) document.setCategory(resourceType.getCategory())
         return Optional.of(mapper.convert(mongoRepository.save(document)))
     }
 }

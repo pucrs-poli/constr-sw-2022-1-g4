@@ -11,7 +11,7 @@ interface ResourceRepository {
 
     Optional<Resource> findById(String id)
 
-    List<Resource> findByAttribute(Query query)
+    List<Resource> findByAttribute(String query)
 
     Optional<Resource> delete(String id)
 

@@ -1,4 +1,4 @@
-package com.djl.resources.domain.data.model;
+package com.djl.resources.domain.data.parser;
 
 import com.djl.resources.domain.data.parser.MongoOperator;
 
@@ -24,5 +24,19 @@ public class Attribute {
 
   public String getValue() {
     return value;
+  }
+
+  private String getQueryValue() {
+    try {
+      Long.parseLong(value);
+      return value;
+    } catch (NumberFormatException exception) {
+      return "'" + value + "'";
+    }
+  }
+
+  @Override
+  public String toString() {
+    return "'" + field + "': { $" + operator.getMongoOp() + ": " + getQueryValue() + "}";
   }
 }
