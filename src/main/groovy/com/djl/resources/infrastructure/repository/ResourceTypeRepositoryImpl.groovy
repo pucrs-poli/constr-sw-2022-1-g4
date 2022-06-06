@@ -22,7 +22,7 @@ class ResourceTypeRepositoryImpl implements ResourceTypeRepository {
 
     @Override
     Optional<ResourceType> create(ResourceType resourceType) {
-        if(mongoRepository.existsById(new ObjectId(resourceType.getId()))) return Optional.empty()
+        if(mongoRepository.existsById(resourceType.getId())) return Optional.empty()
         return Optional.of(mapper.convert(mongoRepository.save(mapper.convertToDocument(resourceType))))
     }
 
@@ -33,7 +33,7 @@ class ResourceTypeRepositoryImpl implements ResourceTypeRepository {
 
     @Override
     Optional<ResourceType> findById(String id) {
-        Optional<ResourceTypeDocument> byId = mongoRepository.findById(new ObjectId(id))
+        Optional<ResourceTypeDocument> byId = mongoRepository.findById(id)
         if (byId.isEmpty()) return Optional.empty()
         return byId.map(mapper::convert)
     }
@@ -45,7 +45,7 @@ class ResourceTypeRepositoryImpl implements ResourceTypeRepository {
 
     @Override
     Optional<ResourceType> delete(String id) {
-        Optional<ResourceTypeDocument> byId = mongoRepository.findById(new ObjectId(id))
+        Optional<ResourceTypeDocument> byId = mongoRepository.findById(id)
         if (byId.isEmpty()) return Optional.empty()
         ResourceTypeDocument document = byId.get()
         document.setEnabled(false)
@@ -54,14 +54,14 @@ class ResourceTypeRepositoryImpl implements ResourceTypeRepository {
 
     @Override
     Optional<ResourceType> update(String id, ResourceType resource) {
-        if(!mongoRepository.existsById(new ObjectId(resource.getId()))) return Optional.empty()
+        if(!mongoRepository.existsById(resource.getId())) return Optional.empty()
         resource.setId(id)
         return Optional.of(mapper.convert(mongoRepository.save(mapper.convertToDocument(resource))))
     }
 
     @Override
     Optional<ResourceType> patch(String id, ResourceType resourceType) {
-        Optional<ResourceTypeDocument> byId = mongoRepository.findById(new ObjectId(id))
+        Optional<ResourceTypeDocument> byId = mongoRepository.findById(id)
         if (byId.isEmpty()) return Optional.empty()
         ResourceTypeDocument document = byId.get()
         if(resourceType.getId() != null) document.setId(resourceType.getId())

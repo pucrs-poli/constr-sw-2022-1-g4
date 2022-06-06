@@ -22,7 +22,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     @Override
     Optional<Resource> create(Resource resource) {
-        if (mongoRepository.existsById(new ObjectId(resource.getId())) || mongoRepository.findByName(resource.getName()).isPresent())
+        if (mongoRepository.existsById(resource.getId()) || mongoRepository.findByName(resource.getName()).isPresent())
             return Optional.empty()
         return Optional.of(mapper.convert(mongoRepository.save(mapper.convertToDocument(resource))))
     }
@@ -34,7 +34,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     @Override
     Optional<Resource> findById(String id) {
-        Optional<ResourceDocument> byId = mongoRepository.findById(new ObjectId(id))
+        Optional<ResourceDocument> byId = mongoRepository.findById(id)
         if (byId.isEmpty()) return Optional.empty()
         return byId.map(mapper::convert)
     }
@@ -46,7 +46,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     @Override
     Optional<Resource> delete(String id) {
-        Optional<ResourceDocument> byId = mongoRepository.findById(new ObjectId(id))
+        Optional<ResourceDocument> byId = mongoRepository.findById(id)
         if (byId.isEmpty()) return Optional.empty()
         ResourceDocument document = byId.get()
         document.setEnabled(false)
@@ -55,14 +55,14 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     @Override
     Optional<Resource> update(String id, Resource resource) {
-        if(!mongoRepository.existsById(new ObjectId(resource.getId()))) return Optional.empty()
+        if(!mongoRepository.existsById(resource.getId())) return Optional.empty()
         resource.setId(id)
         return Optional.of(mapper.convert(mongoRepository.save(mapper.convertToDocument(resource))))
     }
 
     @Override
     Optional<Resource> patch(String id, Resource resource) {
-        Optional<ResourceDocument> byId = mongoRepository.findById(new ObjectId(id))
+        Optional<ResourceDocument> byId = mongoRepository.findById(id)
         if (byId.isEmpty()) return Optional.empty()
         ResourceDocument document = byId.get()
         if(resource.getName() != null) document.setName(resource.getName())

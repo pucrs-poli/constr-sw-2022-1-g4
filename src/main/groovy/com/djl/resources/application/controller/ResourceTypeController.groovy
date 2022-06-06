@@ -53,7 +53,7 @@ class ResourceTypeController {
         return service.patch(id, resource)
     }
 
-    @GetMapping("/?{query}")
+    @GetMapping("/q?{query}")
     HttpEntity<List<ResourceType>> getResourceByAttribute(@PathVariable String query){
         return service.getByQuery(query)
     }

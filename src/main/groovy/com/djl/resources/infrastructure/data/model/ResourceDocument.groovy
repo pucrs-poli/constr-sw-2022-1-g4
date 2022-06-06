@@ -4,11 +4,11 @@ import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Document(collection = "resource")
+@Document(collection = "resources")
 class ResourceDocument {
 
     @Id
-    private ObjectId id;
+    private String id;
     private String name;
     private Long id_last_user;
     private String description;

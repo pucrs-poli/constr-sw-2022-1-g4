@@ -21,6 +21,8 @@ class ResourceTypeService {
 
     HttpEntity<ResourceType> createResourceType(ResourceType resourceType) {
         try {
+            resourceType.setId(UUID.randomUUID().toString())
+            resourceType.setEnabled(true)
             Optional<ResourceType> received = resourceTypeRepository.create(resourceType);
             if (received.isPresent()) return new ResponseEntity<ResourceType>(received.get(), HttpStatus.CREATED)
             return new ResponseEntity<ResourceType>(HttpStatus.CONFLICT)

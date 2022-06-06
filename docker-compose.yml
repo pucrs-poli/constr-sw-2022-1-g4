@@ -11,12 +11,3 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
-  resource:
-    depends_on:
-      - mongo
-    build:
-      context: resources
-      dockerfile: Dockerfile
-    container_name: "api-resource"
-    ports:
-      - 8003:8003

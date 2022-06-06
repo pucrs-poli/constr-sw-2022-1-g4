@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.Query
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ResourceMongoRepository extends MongoRepository<ResourceDocument, ObjectId> {
+interface ResourceMongoRepository extends MongoRepository<ResourceDocument, String> {
 
     @Query("{ 'enabled': true }")
     List<ResourceDocument> findAllEnabled();

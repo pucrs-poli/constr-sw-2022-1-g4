@@ -23,8 +23,8 @@ class ResourceController {
         this.service = service
     }
 
-    @PostMapping()
-    HttpEntity<Resource> createUser(@RequestBody Resource resource){
+    @PostMapping
+    HttpEntity<Resource> createResource(@RequestBody Resource resource){
         return service.createResource(resource)
     }
 

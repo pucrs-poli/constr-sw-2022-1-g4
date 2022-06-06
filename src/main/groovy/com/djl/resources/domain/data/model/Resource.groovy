@@ -1,5 +1,7 @@
 package com.djl.resources.domain.data.model
 
+import com.fasterxml.jackson.annotation.JsonCreator
+
 class Resource {
 
     private String id
@@ -10,6 +12,31 @@ class Resource {
     private String model
     private String characteristics
     private boolean enabled
+
+    Resource() {    }
+
+    @JsonCreator
+    Resource(String resourceTypeIdentificator, String name, Long id_last_user, String description, String model, String characteristics) {
+        this.id = new UUID().toString()
+        this.resourceTypeIdentificator = resourceTypeIdentificator
+        this.name = name
+        this.id_last_user = id_last_user
+        this.description = description
+        this.model = model
+        this.characteristics = characteristics
+        this.enabled = true
+    }
+
+    Resource(String id, String resourceTypeIdentificator, String name, Long id_last_user, String description, String model, String characteristics, boolean enabled) {
+        this.id = id
+        this.resourceTypeIdentificator = resourceTypeIdentificator
+        this.name = name
+        this.id_last_user = id_last_user
+        this.description = description
+        this.model = model
+        this.characteristics = characteristics
+        this.enabled = enabled
+    }
 
     String getId() {
         return id
