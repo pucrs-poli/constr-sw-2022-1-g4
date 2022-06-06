@@ -1,7 +1,6 @@
 package com.djl.resources.domain.repository
 
 import com.djl.resources.domain.data.model.Resource
-import org.springframework.data.mongodb.core.query.Query
 
 interface ResourceRepository {
 

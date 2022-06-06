@@ -5,7 +5,6 @@ import com.djl.resources.domain.repository.ResourceRepository
 import com.djl.resources.infrastructure.data.mapper.ResourceMapper
 import com.djl.resources.infrastructure.data.model.ResourceDocument
 import com.djl.resources.infrastructure.repository.persistence.ResourceMongoRepository
-import org.springframework.data.mongodb.core.query.Query
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Component
 

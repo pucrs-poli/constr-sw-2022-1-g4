@@ -5,9 +5,10 @@ import org.springframework.context.annotation.Configuration
 import springfox.documentation.spring.web.plugins.Docket
 
 @Configuration
-public class SpringFoxConfig {
+class SpringFoxConfig {
+
     @Bean
-    public Docket api() {
+    Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())

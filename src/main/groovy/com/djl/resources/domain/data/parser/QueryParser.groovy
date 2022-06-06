@@ -1,7 +1,6 @@
 package com.djl.resources.domain.data.parser
 
 import com.djl.resources.domain.data.exception.InvalidOperatorException
-
 import static MongoOperator.*
 
 class QueryParser {

@@ -5,7 +5,6 @@ import com.djl.resources.domain.repository.ResourceTypeRepository
 import com.djl.resources.infrastructure.data.mapper.ResourceTypeMapper
 import com.djl.resources.infrastructure.data.model.ResourceTypeDocument
 import com.djl.resources.infrastructure.repository.persistence.ResourceTypeMongoRepository
-import org.apache.lucene.search.Query
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Component
 
