@@ -54,7 +54,7 @@ class ResourceTypeRepositoryImpl implements ResourceTypeRepository {
 
     @Override
     Optional<ResourceType> update(String id, ResourceType resource) {
-        if(!mongoRepository.existsById(resource.getId())) return Optional.empty()
+        if(!mongoRepository.existsById(id)) return Optional.empty()
         resource.setId(id)
         return Optional.of(mapper.convert(mongoRepository.save(mapper.convertToDocument(resource))))
     }

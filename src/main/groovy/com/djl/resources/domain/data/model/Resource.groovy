@@ -1,42 +1,28 @@
 package com.djl.resources.domain.data.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import io.swagger.v3.oas.annotations.media.Schema
 
 class Resource {
 
+    @Schema(description = "Resource id", example = "123e4567-e89b-12d3-a456-426614174000")
     private String id
-    private String resourceTypeIdentificator
+    @Schema(description = "ResourceType id", example = "123e4567-e89b-12d3-a456-42661417400")
+    private String resourceTypeIdentification
+    @Schema(description = "Resource name", example = "notebook")
     private String name
-    private Long id_last_user
+    @Schema(description = "Last user identification", example = "42")
+    private Long idLastUser
+    @Schema(description = "Resource description", example = "13' notebook core i3 8gb 512gb")
     private String description
+    @Schema(description = "Resource model", example = "Inspiron 15 3000")
     private String model
+    @Schema(description = "Resource characteristics", example = "Black 110V")
     private String characteristics
+    @Schema(description = "enable flag", example = "true")
     private boolean enabled
 
     Resource() {    }
-
-    @JsonCreator
-    Resource(String resourceTypeIdentificator, String name, Long id_last_user, String description, String model, String characteristics) {
-        this.id = new UUID().toString()
-        this.resourceTypeIdentificator = resourceTypeIdentificator
-        this.name = name
-        this.id_last_user = id_last_user
-        this.description = description
-        this.model = model
-        this.characteristics = characteristics
-        this.enabled = true
-    }
-
-    Resource(String id, String resourceTypeIdentificator, String name, Long id_last_user, String description, String model, String characteristics, boolean enabled) {
-        this.id = id
-        this.resourceTypeIdentificator = resourceTypeIdentificator
-        this.name = name
-        this.id_last_user = id_last_user
-        this.description = description
-        this.model = model
-        this.characteristics = characteristics
-        this.enabled = enabled
-    }
 
     String getId() {
         return id
@@ -46,8 +32,12 @@ class Resource {
         this.id = id
     }
 
-    String getResourceTypeIdentificator() {
-        return resourceTypeIdentificator
+    String getResourceTypeIdentification() {
+        return resourceTypeIdentification
+    }
+
+    void setResourceTypeIdentification(String resourceTypeIdentification) {
+        this.resourceTypeIdentification = resourceTypeIdentification
     }
 
     String getName() {
@@ -58,12 +48,12 @@ class Resource {
         this.name = name
     }
 
-    Long getId_last_user() {
-        return id_last_user
+    Long getIdLastUser() {
+        return idLastUser
     }
 
-    void setId_last_user(Long id_last_user) {
-        this.id_last_user = id_last_user
+    void setIdLastUser(Long idLastUser) {
+        this.idLastUser = idLastUser
     }
 
     String getDescription() {

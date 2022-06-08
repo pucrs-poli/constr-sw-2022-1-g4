@@ -6,13 +6,17 @@ import static MongoOperator.*
 class QueryParser {
 
     String parse(final String query) {
-        LinkedList<String> convertedQuery = new ArrayList<>()
+        ArrayList<String> convertedQuery = new ArrayList<>()
         query.split("&").collect().forEach( (attribute) -> convertedQuery.add(parseAttribute((String)attribute)))
 
-        String queryString = ""
-        convertedQuery.forEach( (attribute) -> queryString + attribute.toString() + ",")
-
-        queryString.substring(0, queryString.length() - 1)
+        String queryString = "{ "
+        for (int i = 0; i < convertedQuery.size(); i++) {
+            queryString += convertedQuery.get(i)
+            if (i < convertedQuery.size() - 1)
+                queryString += ","
+            else
+                queryString += " }"
+        }
 
         return queryString
     }

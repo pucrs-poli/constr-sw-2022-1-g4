@@ -2,26 +2,23 @@ package com.djl.resources.domain.data.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.swagger.v3.oas.annotations.media.Schema
 
 class ResourceType {
 
+    @Schema(description = "Resource type id", example = "123e4567-e89b-12d3-a456-426614174000")
     private String id
+    @Schema(description = "Resource category", example = "computers")
     private String category
+    @Schema(description = "enable flag", example = "true")
     private boolean enabled
 
     ResourceType() {    }
 
-    @JsonCreator
-    ResourceType(String category) {
-        this.id = UUID.randomUUID().toString()
+    ResourceType(ResourceType resourceType) {
+        resourceType.setId(UUID.randomUUID().toString())
         this.category = category
-        this.enabled = true
-    }
-
-    ResourceType(String id, String category, boolean enabled) {
-        this.id = UUID.randomUUID().toString()
-        this.category = category
-        this.enabled = true
+        resourceType.setEnabled(true)
     }
 
     String getId() {

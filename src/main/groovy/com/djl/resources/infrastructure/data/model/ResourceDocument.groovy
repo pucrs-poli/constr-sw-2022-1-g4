@@ -10,13 +10,13 @@ class ResourceDocument {
     @Id
     private String id;
     private String name;
-    private Long id_last_user;
+    private Long idLastUser;
     private String description;
     private String model;
     private String characteristics;
     private boolean enabled;
 
-    ObjectId getId() {
+    String getId() {
         return id
     }
 
@@ -28,12 +28,12 @@ class ResourceDocument {
         this.name = name
     }
 
-    Long getId_last_user() {
-        return id_last_user
+    Long getIdLastUser() {
+        return idLastUser
     }
 
-    void setId_last_user(Long id_last_user) {
-        this.id_last_user = id_last_user
+    void setIdLastUser(Long idLastUser) {
+        this.idLastUser = idLastUser
     }
 
     String getDescription() {

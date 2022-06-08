@@ -12,7 +12,7 @@ public interface ResourceTypeMapper {
 
   ResourceTypeDocument convertToDocument(ResourceType resourceType);
 
-  @Mapping(target = "id", expression = "java(resourceTypeDocument.getId().toString())")
+  //@Mapping(target = "id", expression = "java(resourceTypeDocument.getId().toString())")
   ResourceType convert(ResourceTypeDocument resourceTypeDocument);
 
 }
