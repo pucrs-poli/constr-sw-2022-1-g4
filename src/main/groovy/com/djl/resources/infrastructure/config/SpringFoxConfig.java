@@ -16,8 +16,7 @@ public class SpringFoxConfig {
         .select()
         .apis(RequestHandlerSelectors.any())
         .paths(PathSelectors.any())
-        .build()
-        .pathMapping("resources");
+        .build();
   }
 }
 

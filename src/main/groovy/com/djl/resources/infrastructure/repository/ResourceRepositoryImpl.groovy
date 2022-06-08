@@ -53,6 +53,14 @@ class ResourceRepositoryImpl implements ResourceRepository {
         return Optional.of(mapper.convert(mongoRepository.save(document)))
     }
 
+    void deleteAllOfGivenResourceType(String id) {
+        List<ResourceDocument> byResourceTypeIdentification = mongoRepository.findByResourceTypeIdentification(id)
+        for (ResourceDocument document : byResourceTypeIdentification) {
+            document.setEnabled(false)
+            mongoRepository.save(document)
+        }
+    }
+
     @Override
     Optional<Resource> update(String id, Resource resource) {
         if(!mongoRepository.existsById(resource.getId())) return Optional.empty()
@@ -66,7 +74,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
         if (byId.isEmpty()) return Optional.empty()
         ResourceDocument document = byId.get()
         if(resource.getName() != null) document.setName(resource.getName())
-        if(resource.getId_last_user() != null) document.setId_last_user(resource.getId_last_user())
+        if(resource.getResourceTypeIdentification() != null) document.setResourceTypeIdentification(resource.getResourceTypeIdentification())
+        if(resource.getIdLastUser() != null) document.setIdLastUser(resource.getIdLastUser())
         if(resource.getDescription() != null) document.setDescription(resource.getDescription())
         if(resource.getModel() != null) document.setModel(resource.getModel())
         if(resource.getCharacteristics() != null) document.setCharacteristics(resource.getCharacteristics())

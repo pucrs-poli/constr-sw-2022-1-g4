@@ -18,5 +18,8 @@ interface ResourceMongoRepository extends MongoRepository<ResourceDocument, Stri
     @Query("{ ?0 }")
     List<ResourceDocument> findByQuery(String query);
 
+    @Query("{ 'resourceTypeIdentification': ?0 }")
+    List<ResourceDocument> findByResourceTypeIdentification(String resourceTypeIdentification)
+
 
 }

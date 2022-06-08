@@ -1,7 +1,9 @@
 package com.djl.resources.domain.service
 
+import com.djl.resources.domain.data.model.Resource
 import com.djl.resources.domain.data.model.ResourceType
 import com.djl.resources.domain.data.parser.QueryParser
+import com.djl.resources.domain.repository.ResourceRepository
 import com.djl.resources.domain.repository.ResourceTypeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpEntity
@@ -12,10 +14,13 @@ import org.springframework.stereotype.Service
 @Service
 class ResourceTypeService {
 
+    private ResourceRepository resourceRepository
+
     private ResourceTypeRepository resourceTypeRepository;
 
     @Autowired
-    ResourceTypeService(ResourceTypeRepository resourceTypeRepository) {
+    ResourceTypeService(ResourceTypeRepository resourceTypeRepository, ResourceRepository resourceRepository) {
+        this.resourceRepository = resourceRepository
         this.resourceTypeRepository = resourceTypeRepository
     }
 
@@ -64,8 +69,10 @@ class ResourceTypeService {
     HttpEntity<ResourceType> deleteById(String id) {
         try {
             Optional<ResourceType> received = resourceTypeRepository.delete(id)
-            if (received.isPresent()) return new ResponseEntity<ResourceType>(HttpStatus.NO_CONTENT)
-            return new ResponseEntity<ResourceType>(HttpStatus.NOT_FOUND)
+            if (received.isEmpty())
+                return new ResponseEntity<ResourceType>(HttpStatus.NOT_FOUND)
+            resourceRepository.deleteAllOfGivenResourceType(id)
+            return new ResponseEntity<ResourceType>(HttpStatus.NO_CONTENT)
         } catch (Exception exception) {
             return new ResponseEntity<ResourceType>(HttpStatus.BAD_REQUEST)
         }

@@ -9,6 +9,7 @@ class ResourceDocument {
 
     @Id
     private String id;
+    private String resourceTypeIdentification;
     private String name;
     private Long idLastUser;
     private String description;
@@ -18,6 +19,18 @@ class ResourceDocument {
 
     String getId() {
         return id
+    }
+
+    String getResourceTypeIdentification() {
+        return resourceTypeIdentification
+    }
+
+    void setId(String id) {
+        this.id = id
+    }
+
+    void setResourceTypeIdentification(String resourceTypeIdentification) {
+        this.resourceTypeIdentification = resourceTypeIdentification
     }
 
     String getName() {

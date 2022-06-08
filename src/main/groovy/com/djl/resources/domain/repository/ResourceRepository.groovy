@@ -14,6 +14,8 @@ interface ResourceRepository {
 
     Optional<Resource> delete(String id)
 
+    void deleteAllOfGivenResourceType(String id)
+
     Optional<Resource> update(String id, Resource resource)
 
     Optional<Resource> patch(String id, Resource resource)
